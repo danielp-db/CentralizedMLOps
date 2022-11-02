@@ -1,4 +1,7 @@
 # Databricks notebook source
+dbutils.widgets.dropdown("centralized", "False", ["False", "True"])
+isCentralized = dbutils.widgets.get("centralized") == "True"
+
 dbutils.widgets.dropdown("environment", "dev", ["dev", "cert", "prod"])
 environment = dbutils.widgets.get("environment")
 
@@ -10,7 +13,8 @@ environment = dbutils.widgets.get("environment")
 
 from databricks import feature_store
 
-if environment == "prod":
+#if environment == "prod":
+if isCentralized:
     scope = 'cmr_scope'
     prefix = 'cmr'
 
@@ -43,7 +47,7 @@ transform_data = raw_data.select([F.log(c).alias(c) if c in log_columns else F.c
 
 (
     transform_data.write
-    .option("path", f"abfss://demo@danpstgacct1.dfs.core.windows.net/{environment}_fs/data/house_features")
+    #.option("path", f"abfss://demo@danpstgacct1.dfs.core.windows.net/{environment}_fs/data/house_features")
     .mode("overwrite")
     .saveAsTable(f"{environment}_fs.house_features")
 )
