@@ -12,6 +12,10 @@ df = spark.sql(f"SELECT * FROM {environment}_data.house_data")
 
 # COMMAND ----------
 
+# MAGIC %md PySpark Profile
+
+# COMMAND ----------
+
 display(df)
 
 # COMMAND ----------
@@ -20,7 +24,7 @@ display(df)
 
 # COMMAND ----------
 
-# MAGIC %md ## Model 1
+# MAGIC %md ## Model 1 - No MLFlow
 
 # COMMAND ----------
 
@@ -47,7 +51,7 @@ mean_squared_error(y_train, y_train_hat)
 
 # COMMAND ----------
 
-# MAGIC %md ## Model 2
+# MAGIC %md ## Model 2 - With Feature Engineering
 
 # COMMAND ----------
 
