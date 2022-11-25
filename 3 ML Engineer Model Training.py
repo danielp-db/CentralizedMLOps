@@ -1,4 +1,7 @@
 # Databricks notebook source
+dbutils.widgets.dropdown("centralized", "False", ["False", "True"])
+isCentralized = dbutils.widgets.get("centralized") == "True"
+
 dbutils.widgets.dropdown("environment", "dev", ["dev", "cert", "prod"])
 environment = dbutils.widgets.get("environment")
 
@@ -17,12 +20,15 @@ model_name = dbutils.widgets.get("model_name")
 
 from databricks import feature_store
 
-scope = 'cmr_scope'
-prefix = 'cmr'
+#if environment == "prod":
+if isCentralized:
+    scope = 'cmr_scope'
+    prefix = 'cmr'
 
-feature_store_uri = f'databricks://{scope}:{prefix}'
-model_registry_uri = f'databricks://{scope}:{prefix}'
-fs = feature_store.FeatureStoreClient(feature_store_uri=feature_store_uri, model_registry_uri=model_registry_uri)
+    feature_store_uri = f'databricks://{scope}:{prefix}'
+    fs = feature_store.FeatureStoreClient(feature_store_uri=feature_store_uri)
+else:
+    fs = feature_store.FeatureStoreClient()
 
 # COMMAND ----------
 
@@ -32,7 +38,7 @@ fs = feature_store.FeatureStoreClient(feature_store_uri=feature_store_uri, model
 
 import mlflow
 
-model_tracking_uri = None #f'databricks://{scope}:{prefix}'
+model_tracking_uri = "databricks" #f'databricks://{scope}:{prefix}' None
 mlflow.set_tracking_uri(model_tracking_uri)
 
 # COMMAND ----------
@@ -41,8 +47,12 @@ mlflow.set_tracking_uri(model_tracking_uri)
 
 # COMMAND ----------
 
-model_registry_uri = f'databricks://{scope}:{prefix}'
-mlflow.set_registry_uri(model_registry_uri)
+if isCentralized:
+    scope = 'cmr_scope'
+    prefix = 'cmr'
+
+    model_registry_uri = f'databricks://{scope}:{prefix}'
+    mlflow.set_registry_uri(model_registry_uri)
 
 # COMMAND ----------
 
