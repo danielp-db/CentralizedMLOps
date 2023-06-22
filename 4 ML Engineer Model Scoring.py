@@ -35,17 +35,6 @@ else:
 
 # COMMAND ----------
 
-# MAGIC %md # Connect to Model Tracking
-
-# COMMAND ----------
-
-import mlflow
-
-model_tracking_uri = "databricks" #f'databricks://{scope}:{prefix}' None
-mlflow.set_tracking_uri(model_tracking_uri)
-
-# COMMAND ----------
-
 # MAGIC %md # Connect to Model Registry
 
 # COMMAND ----------
@@ -82,6 +71,8 @@ house_data = training_set.load_df()
 # MAGIC %md ### Score Pandas Dataframe
 
 # COMMAND ----------
+
+import mlflow
 
 model = mlflow.pyfunc.load_model(f'models:/{model_name}/{model_version}')
 
