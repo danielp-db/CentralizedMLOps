@@ -9,6 +9,7 @@ Adds cell
 
 from sklearn.datasets import fetch_california_housing
 
+
 for environment in ["dev", "cert", "prod"]:
     spark.sql(f"""CREATE DATABASE IF NOT EXISTS {environment}_data""")
                 #LOCATION 'abfss://demo@danpstgacct1.dfs.core.windows.net/{environment}_data/db'""")
