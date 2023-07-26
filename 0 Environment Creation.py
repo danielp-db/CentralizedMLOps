@@ -3,6 +3,8 @@
 
 # COMMAND ----------
 
+"HOLA!"
+
 from sklearn.datasets import fetch_california_housing
 
 for environment in ["dev", "cert", "prod"]:
